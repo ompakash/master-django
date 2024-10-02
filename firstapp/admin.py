@@ -18,7 +18,7 @@ class CustomUserAdmin(UserAdmin):
     list_display = ('email', 'is_staff', 'is_active',)
     list_filter = ('email', 'is_staff', 'is_active',)
     fieldsets = (
-        (None, {'fields': ('email','password','user_type')}),
+        (None, {'fields': ('email','password','is_customer','is_seller')}),
         ('Permissions', {'fields': ('is_staff', 'is_active')}),   
     )
     add_fieldsets = (
@@ -66,4 +66,4 @@ class CartAdmin(admin.ModelAdmin):
     list_filter = ['user__is_staff','created_on',]
     search_fields = ['user__username']
 
-admin.site.register(UserType)
+# admin.site.register(UserType)

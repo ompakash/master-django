@@ -9,18 +9,18 @@ from django.utils.translation import gettext_lazy as _
 from firstapp.managers import CustomUserManager
 
 
-class UserType(models.Model):
-    CUSTOMER = 1
-    SELLER = 2
-    TYPE_CHOICES = (
-        (SELLER, 'Seller'),
-        (CUSTOMER, 'Customer'),
-    )
+# class UserType(models.Model):
+#     CUSTOMER = 1
+#     SELLER = 2
+#     TYPE_CHOICES = (
+#         (SELLER, 'Seller'),
+#         (CUSTOMER, 'Customer'),
+#     )
 
-    id = models.PositiveIntegerField(choices=TYPE_CHOICES, primary_key=True)
+#     id = models.PositiveIntegerField(choices=TYPE_CHOICES, primary_key=True)
 
-    def __str__(self):
-        return self.get_id_display()
+#     def __str__(self):
+#         return self.get_id_display()
     
 
 class CustomUser(AbstractBaseUser,PermissionsMixin):
@@ -31,8 +31,8 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
     date_joined = models.DateTimeField(default=timezone.now)
 
     # 1 CUSTOMER AND SELLER
-    # is_customer = models.BooleanField(default=True)
-    # is_seller = models.BooleanField(default=False)
+    is_customer = models.BooleanField(default=True)
+    is_seller = models.BooleanField(default=False)
 
     # 2 CUSTOMER AND SELLER
     # type = (
@@ -42,7 +42,7 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
     # user_type = models.IntegerField(choices=type, default=1)
 
     # 3 CUSTOMER AND SELLER
-    user_type = models.ManyToManyField(UserType)
+    # user_type = models.ManyToManyField(UserType)
 
 
     USERNAME_FIELD = 'email'
