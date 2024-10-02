@@ -1,0 +1,38 @@
+.pyc
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Caches
+*.sqlite3
+db.sqlite3
+*.db
+
+# Logs
+*.log
+
+# Virtual environment
+venv/
+env/
+
+# IDEs
+.idea/
+.vscode/
+
+# Environment variables
+.env
+
+# Django static and media files
+/staticfiles/
+/media/
+
+# Ignore migrations, as they are auto-generated
+**/migrations/
+
+# Ignore local settings
+**/local_settings.py
+
+# Ignore system files
+.DS_Store
+Thumbs.db
