@@ -1,6 +1,5 @@
 from django.contrib import admin
 from firstapp.models import *
-from firstapp.models import *
 from django.contrib.auth.admin import UserAdmin
 from firstapp.forms import *
 
@@ -19,8 +18,8 @@ class CustomUserAdmin(UserAdmin):
     list_display = ('email', 'is_staff', 'is_active',)
     list_filter = ('email', 'is_staff', 'is_active',)
     fieldsets = (
-        (None, {'fields': ('email','password')}),
-        ('Permissions', {'fields': ('is_staff', 'is_active','is_customer' , 'is_seller')}),   
+        (None, {'fields': ('email','password','user_type')}),
+        ('Permissions', {'fields': ('is_staff', 'is_active')}),   
     )
     add_fieldsets = (
         (None, {
@@ -66,3 +65,5 @@ class CartAdmin(admin.ModelAdmin):
 
     list_filter = ['user__is_staff','created_on',]
     search_fields = ['user__username']
+
+admin.site.register(UserType)
