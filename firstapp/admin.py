@@ -67,3 +67,4 @@ class CartAdmin(admin.ModelAdmin):
     search_fields = ['user__username']
 
 # admin.site.register(UserType)
+admin.site.register(Contact)
