@@ -3,10 +3,12 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.core.validators import RegexValidator
 # Create your models here.
-
+from multiselectfield import MultiSelectField
+from multiselectfield.validators import MaxValueMultiFieldValidator,validators, MaxChoicesValidator
 from django.contrib.auth.models import AbstractUser,PermissionsMixin,AbstractBaseUser
 from django.utils.translation import gettext_lazy as _
 from firstapp.managers import CustomUserManager
+from django.db.models import Q
 
 
 # class UserType(models.Model):
@@ -31,8 +33,8 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
     date_joined = models.DateTimeField(default=timezone.now)
 
     # 1 CUSTOMER AND SELLER
-    is_customer = models.BooleanField(default=True)
-    is_seller = models.BooleanField(default=False)
+    # is_customer = models.BooleanField(default=True)
+    # is_seller = models.BooleanField(default=False)
 
     # 2 CUSTOMER AND SELLER
     # type = (
@@ -49,7 +51,8 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
         CUSTOMER = 'Customer',"CUSTOMER"
 
     default_type = Types.CUSTOMER
-    type = models.CharField(_('Type'), max_length=255, choices=Types.choices, default=default_type)
+    # type = models.CharField(_('Type'), max_length=255, choices=Types.choices, default=default_type)
+    type = MultiSelectField(choices=Types.choices, default=[], null=True, blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -77,11 +80,13 @@ class SellerAdditional(models.Model):
 
 class SellerManager(models.Manager):
     def get_queryset(self, *args, **kwargs):
-        return super().get_queryset(*args, **kwargs).filter(type = CustomUser.Types.SELLER)
+        return super().get_queryset(*args, **kwargs).filter(Q(type__contains = CustomUser.Types.SELLER))
+        # return super().get_queryset(*args, **kwargs).filter(type = CustomUser.Types.SELLER)
 
 class CustomerManager(models.Manager):
     def get_queryset(self,*args, **kwargs):
-        return super().get_queryset(*args, **kwargs).filter(type = CustomUser.Types.CUSTOMER)
+        return super().get_queryset(*args, **kwargs).filter(Q(type__contains = CustomUser.Types.CUSTOMER))
+        # return super().get_queryset(*args, **kwargs).filter(type = CustomUser.Types.CUSTOMER)
 
 # proxy model, it will not create a seperate table
 class Seller(CustomUser):

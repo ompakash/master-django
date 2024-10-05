@@ -2,9 +2,12 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 from django.core.exceptions import ValidationError
-from .forms import ContactUsForm
-from django.views.generic import TemplateView, FormView, CreateView
+from . forms import *
+from django.views.generic import TemplateView, FormView, CreateView 
 from django.urls import reverse_lazy, reverse
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 def Index(TemplateView):
     # return render(request, 'firstapp/index.html')
@@ -63,3 +66,30 @@ class ContactUs(FormView):
             #form.errors['__all__'] = 'Query length is not right. It should be in 10 digits.'
         response = super().form_invalid(form)
         return response
+
+
+class RegisterView(CreateView):
+    template_name = 'firstapp/registerbasicuser.html'
+    form_class = RegistrationForm
+    success_url = reverse_lazy('index')
+
+class LoginViewUser(LoginView):
+    template_name = "firstapp/login.html"
+    #success_url = reverse_lazy('index')
+
+
+class RegisterViewSeller(LoginRequiredMixin,CreateView):
+    template_name = 'firstapp/registerseller.html'
+    form_class = RegistrationFormSeller2
+    success_url = reverse_lazy('index')
+
+    def form_valid(self, form):
+        user = self.request.user
+        user.type.append(user.Types.SELLER)
+        user.save()
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+    
+
+class LogoutViewUser(LogoutView):
+    success_url = reverse_lazy('index')
